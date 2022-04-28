@@ -13,20 +13,48 @@ nums[] = [1, 4, 5, 8, 9]
 target = 2
 Output: Element not found */
 
-// Direct solution - O(n)
-int[] nums = { 2, 3, 5, 7, 9 };
-int target = 17;
-bool flag = false;
-
-for (int i = 0; i < nums.Length; i++)
+// Binary Search Algorithm
+static int binarySearch(int[] nums, int target)
 {
-    if (nums[i] == target)
+    // search space is nums[left…right]
+    int min = 0;
+    int max = nums.Length - 1;
+
+    // loop till the search space is exhausted
+    while (min <= max)
     {
-        Console.WriteLine("Element is found at index " + i.ToString());
-        flag = true;
-        break;
+        int mid = (min + max) / 2;
+
+        // target is found
+        if (target == nums[mid])
+        {
+            return mid;
+        }
+        // discard all elements in the right search space,
+        // including the middle element
+        else if (target < nums[mid])
+        {
+            max = mid - 1;
+        }
+        // discard all elements in the left search space,
+        // including the middle element
+        else
+        {
+            min = mid + 1;
+        }
     }
+
+    // target doesn't exist in the array
+    return -1;
 }
 
-if (!flag)
-    Console.WriteLine("Element is not found");
+
+int[] nums = { 2, 3, 5, 7, 9 };
+int target = 7;
+
+int index = binarySearch(nums, target);
+
+if (index != -1)
+    Console.WriteLine("Element found at index " + index);
+else
+    Console.WriteLine("Element not found in the array");
